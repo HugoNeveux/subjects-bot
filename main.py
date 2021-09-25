@@ -11,7 +11,7 @@ with open("token.txt", "r") as tokenfile:
 
 # Load bot config
 with open("config.yml") as configfile:
-    config = yaml.load(configfile, Loader=SafeLoader)
+    config = yaml.safe_load(configfile)
     SUBJECTS_CHANNEL = config["channel"]
     PING_ROLE = config["ping_role_id"]
 
