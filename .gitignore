@@ -131,3 +131,4 @@ dmypy.json
 # Ignore discord bot token
 token.txt
 config.yml
+subjects.txt
