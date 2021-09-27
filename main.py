@@ -4,13 +4,10 @@ import yaml
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 
-# Load bot token
-with open("token.txt", "r") as tokenfile:
-    TOKEN = tokenfile.read().strip()
-
 # Load bot config
 with open("config.yml") as configfile:
     config = yaml.safe_load(configfile)
+    TOKEN = config["token"]
     SUBJECTS_CHANNEL = config["channel"]
     PING_ROLE = config["ping_role_id"]
 
