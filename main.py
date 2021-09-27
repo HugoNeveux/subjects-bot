@@ -21,7 +21,7 @@ async def send_daily_subject():
     with open("daily_subjects.txt", "r") as daily_subjects_list:
         subjects = daily_subjects_list.read().split("\n")
     try:
-        await channel.send(f"<&{PING_ROLE}> Bonjour ! Le sujet est {subjects[0]}")   # Send subject
+        await channel.send(f"<@&{PING_ROLE}> Bonjour ! Le sujet est {subjects[0]}")   # Send subject
     except IndexError:
         await channel.send("Il n'y a pas de sujet prévu pour aujourd'hui.")
         return
