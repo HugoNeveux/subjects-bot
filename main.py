@@ -1,5 +1,6 @@
 from discord.ext import commands, tasks
 from discord.utils import get
+from discord import Embed
 import yaml
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
@@ -10,6 +11,7 @@ with open("config.yml") as configfile:
     TOKEN = config["token"]
     SUBJECTS_CHANNEL = config["channel"]
     PING_ROLE = config["ping_role_id"]
+    STAFF_ROLE_NAME = config["staff_role_name"]
 
 bot = commands.Bot("$")
 
@@ -28,6 +30,46 @@ async def send_daily_subject():
     subjects = subjects[1:]
     with open("daily_subjects.txt", "w") as daily_subjects_list:
         daily_subjects_list.write("\n".join(subjects))  # Edit subjects list
+
+@bot.command(pass_context = True)
+async def ping(ctx):
+    """
+    Usual ping command
+    """
+    await ctx.send("Pong !")
+
+@bot.command(pass_context = True)
+@commands.has_role(STAFF_ROLE_NAME)
+async def list_subjects(ctx):
+    """
+    List all daily subjects in daily_subjects.txt file
+    """
+    with open("daily_subjects.txt", "r") as daily_subjects_list:
+        subjects = daily_subjects_list.read()
+    embed = Embed(title = "Prochains sujets", description = subjects, color=0x000000)
+    await ctx.send(embed = embed)
+
+@bot.command(pass_context = True)
+@commands.has_role(STAFF_ROLE_NAME)
+async def add_subject(ctx, subject):
+    """
+    Add subject to the list
+    """
+    with open("daily_subjects.txt", "a") as daily_subjects_list:
+        daily_subjects_list.write(subject)
+    await ctx.send(f"Sujet {subject} ajouté à la fin de la liste !")
+
+@bot.command(pass_context = True)
+@commands.has_role(STAFF_ROLE_NAME)
+async def remove_last_subject(ctx):
+    """
+    Remove last subject from list
+    """
+    with open("daily_subjects.txt", "r") as daily_subjects_list:
+        subjects = daily_subjects_list.read().split("\n")[:-1]
+    with open("daily_subjects.txt", "w") as daily_subjects_list:
+        daily_subjects_list.write("\n".join(subjects))
+    await ctx.send("Le dernier sujet de la liste a été supprimé.")
 
 @bot.event
 async def on_ready():
