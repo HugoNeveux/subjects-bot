@@ -9,11 +9,12 @@ from apscheduler.triggers.cron import CronTrigger
 with open("config.yml") as configfile:
     config = yaml.safe_load(configfile)
     TOKEN = config["token"]
+    PREFIX = config["prefix"]
     SUBJECTS_CHANNEL = config["channel"]
     PING_ROLE = config["ping_role_id"]
     STAFF_ROLE_NAME = config["staff_role_name"]
 
-bot = commands.Bot("$")
+bot = commands.Bot(PREFIX)
 
 async def send_daily_subject():
     """
