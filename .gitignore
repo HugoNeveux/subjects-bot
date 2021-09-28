@@ -133,3 +133,6 @@ token.txt
 config.yml
 subjects.txt
 daily_subjects.txt
+
+# Vim swap files 
+*.swp
