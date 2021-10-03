@@ -15,6 +15,10 @@ with open("config.yml") as configfile:
     PING_ROLE = config["ping_role_id"]
     STAFF_ROLE_NAME = config["staff_role_name"]
 
+# Load strings
+with open("strings.yml", "r") as stringsfile:
+    strings = yaml.safe_load(stringsfile)
+
 bot = commands.Bot(PREFIX)
 
 
@@ -28,11 +32,11 @@ async def send_daily_subject():
     try:
         # Send subject
         await channel.send(
-            f"<@&{PING_ROLE}> Bonjour ! Le sujet est **{subjects[0]}**."
+            strings["subject_message"].format(f"<@&{PING_ROLE}>", subjects[0])
         )
     except IndexError:
         # Reply no subjects
-        await channel.send("Il n'y a pas de sujet prévu pour aujourd'hui.")
+        await channel.send(strings["no_subject_message"])
         return
     # Remove last subject
     subjects = subjects[1:]
@@ -44,7 +48,7 @@ async def send_daily_subject():
 @bot.command(pass_context=True)
 async def ping(ctx):
     """Usual ping command"""
-    await ctx.send("Pong !")
+    await ctx.send(strings["ping"])
 
 
 @bot.command(pass_context=True)
@@ -55,7 +59,9 @@ async def list_subjects(ctx):
     with open("daily_subjects.txt", "r") as daily_subjects_list:
         subjects = daily_subjects_list.read()
     # Reply
-    embed = Embed(title="Prochains sujets", description=subjects, color=0x000000)
+    embed = Embed(
+        title=strings["list_subjects_title"], description=subjects, color=0x000000
+    )
     await ctx.send(embed=embed)
 
 
@@ -67,7 +73,7 @@ async def add_subject(ctx, subject):
     with open("daily_subjects.txt", "a") as daily_subjects_list:
         daily_subjects_list.write("\n" + subject)
     # Reply
-    await ctx.send(f"Sujet {subject} ajouté à la fin de la liste !")
+    await ctx.send(strings["subject_added"].format(subject))
 
 
 @bot.command(pass_context=True)
@@ -81,7 +87,7 @@ async def remove_last_subject(ctx):
     with open("daily_subjects.txt", "w") as daily_subjects_list:
         daily_subjects_list.write("\n".join(subjects))
     # Reply
-    await ctx.send("Le dernier sujet de la liste a été supprimé.")
+    await ctx.send(strings["last_subject_removed"])
 
 
 @bot.event
