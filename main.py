@@ -65,7 +65,7 @@ async def add_subject(ctx, subject):
     """Add subject to the list"""
     # Append subjects
     with open("daily_subjects.txt", "a") as daily_subjects_list:
-        daily_subjects_list.write(subject)
+        daily_subjects_list.write("\n" + subject)
     # Reply
     await ctx.send(f"Sujet {subject} ajouté à la fin de la liste !")
 
