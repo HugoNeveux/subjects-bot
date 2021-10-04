@@ -80,7 +80,7 @@ async def on_ready():
     # Schedule task to send subjects daily
     scheduler = AsyncIOScheduler()
     scheduler.add_job(
-        send_daily_subject, CronTrigger.from_crontab("* * * * *")
+        send_daily_subject, CronTrigger.from_crontab("0 0 * * *")
     )
     scheduler.start()
 
