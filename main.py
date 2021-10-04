@@ -37,11 +37,6 @@ async def on_command_error(ctx, error):
     )
 
 
-@bot.command()
-async def erreur(ctx):
-    await ctx.send(3 / 0)
-
-
 async def send_daily_subject():
     """This functions sends a message every day in the subjects channel"""
     # Get channel object
